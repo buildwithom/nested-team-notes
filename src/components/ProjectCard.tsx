@@ -30,11 +30,11 @@ const ProjectCard = ({
   const completionPercentage = tasks.length > 0 ? (completedTasks / tasks.length) * 100 : 0;
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.02]">
+    <Card className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-border bg-card hover:scale-[1.02] hover:border-primary/30 shadow-md">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
-          <div className={`w-3 h-3 rounded-full ${color} mb-2`}></div>
-          <Badge variant="secondary" className="text-xs">
+          <div className={`w-3 h-3 rounded-full ${color} mb-2 shadow-sm`}></div>
+          <Badge variant="secondary" className="text-xs border border-border/50">
             {lastUpdated}
           </Badge>
         </div>
@@ -53,9 +53,9 @@ const ProjectCard = ({
               <span className="text-muted-foreground">Progress</span>
               <span className="font-medium">{Math.round(completionPercentage)}%</span>
             </div>
-            <div className="w-full bg-muted rounded-full h-2">
+            <div className="w-full bg-muted rounded-full h-2 border border-border/20">
               <div 
-                className="gradient-primary h-2 rounded-full transition-all duration-300"
+                className="gradient-primary h-2 rounded-full transition-all duration-300 shadow-sm"
                 style={{ width: `${completionPercentage}%` }}
               ></div>
             </div>
@@ -64,10 +64,10 @@ const ProjectCard = ({
           {/* Tasks List */}
           <div className="space-y-2">
             {tasks.slice(0, 4).map((task, index) => (
-              <div key={index} className="flex items-center space-x-2">
+              <div key={index} className="flex items-center space-x-2 p-1 rounded border border-transparent hover:border-border/30 hover:bg-accent/30 transition-colors">
                 <Checkbox 
                   checked={task.isChecked}
-                  className="h-4 w-4"
+                  className="h-4 w-4 border-2 border-border data-[state=checked]:border-primary"
                 />
                 <span className={`text-sm ${task.isChecked ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
                   {task.text}
@@ -75,14 +75,14 @@ const ProjectCard = ({
               </div>
             ))}
             {tasks.length > 4 && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground border-t border-border/30 pt-2">
                 +{tasks.length - 4} more tasks
               </p>
             )}
           </div>
 
           {/* Stats */}
-          <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t">
+          <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t border-border/50">
             <div className="flex items-center space-x-1">
               <User className="h-4 w-4" />
               <span>{collaborators}</span>
