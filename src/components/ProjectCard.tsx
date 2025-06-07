@@ -1,15 +1,19 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, CheckSquare, FileText } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { User } from "lucide-react";
+
+interface Task {
+  text: string;
+  isChecked: boolean;
+}
 
 interface ProjectCardProps {
   title: string;
   description: string;
   collaborators: number;
-  tasksCompleted: number;
-  totalTasks: number;
-  pages: number;
+  tasks: Task[];
   color: string;
   lastUpdated: string;
 }
@@ -18,13 +22,12 @@ const ProjectCard = ({
   title, 
   description, 
   collaborators, 
-  tasksCompleted, 
-  totalTasks, 
-  pages, 
+  tasks, 
   color,
   lastUpdated 
 }: ProjectCardProps) => {
-  const completionPercentage = totalTasks > 0 ? (tasksCompleted / totalTasks) * 100 : 0;
+  const completedTasks = tasks.filter(task => task.isChecked).length;
+  const completionPercentage = tasks.length > 0 ? (completedTasks / tasks.length) * 100 : 0;
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.02]">
@@ -58,20 +61,33 @@ const ProjectCard = ({
             </div>
           </div>
 
+          {/* Tasks List */}
+          <div className="space-y-2">
+            {tasks.slice(0, 4).map((task, index) => (
+              <div key={index} className="flex items-center space-x-2">
+                <Checkbox 
+                  checked={task.isChecked}
+                  className="h-4 w-4"
+                />
+                <span className={`text-sm ${task.isChecked ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                  {task.text}
+                </span>
+              </div>
+            ))}
+            {tasks.length > 4 && (
+              <p className="text-xs text-muted-foreground">
+                +{tasks.length - 4} more tasks
+              </p>
+            )}
+          </div>
+
           {/* Stats */}
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t">
             <div className="flex items-center space-x-1">
               <User className="h-4 w-4" />
               <span>{collaborators}</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <CheckSquare className="h-4 w-4" />
-              <span>{tasksCompleted}/{totalTasks}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <FileText className="h-4 w-4" />
-              <span>{pages}</span>
-            </div>
+            <span>{completedTasks}/{tasks.length} tasks</span>
           </div>
         </div>
       </CardContent>
